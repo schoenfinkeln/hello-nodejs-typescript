@@ -1,23 +1,45 @@
 import { Request, Response } from 'express';
 import { taskModel } from '../model/tasks.model';
 
-export async function listTasksAction(request: Request, response: Response) {
-  const tasks = await taskModel.getAll();
-  response.send(tasks);
+export function listTasksAction(request: Request, response: Response) {
+  taskModel
+    .getAll()
+    .then((tasks) => {
+      response.status(200);
+      response.send(tasks);
+    })
+    .catch((err) => {
+      response.status(500);
+      response.send(err);
+    });
 }
 
-export async function addTaskAction(request: Request, response: Response) {
-  console.log(request.body);
+export function addTaskAction(request: Request, response: Response) {
   const task = { ...defaultTask, ...request.body };
-  const result = await taskModel.add(task);
-  response.send(result);
+  taskModel
+    .add(task)
+    .then((result) => {
+      response.status(202);
+      response.send(result);
+    })
+    .catch((err) => {
+      response.status(500);
+      response.send(err);
+    });
 }
 
-export async function deleteTaskAction(request: Request, response: Response) {
+export function deleteTaskAction(request: Request, response: Response) {
   const id = request.param('id');
-  const task = await taskModel.remove(id);
-  response.status(202);
-  response.send(task);
+  taskModel
+    .remove(id)
+    .then((task) => {
+      response.status(202);
+      response.send(task);
+    })
+    .catch((err) => {
+      response.status(500);
+      response.send(err);
+    });
 }
 
 const defaultTask = {
