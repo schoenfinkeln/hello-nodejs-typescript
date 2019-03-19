@@ -1,12 +1,13 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
+import morgan = require('morgan');
+import { tasksRouter } from './tasks/router/tasks.router';
 
 const PORT = 3030;
 const app = express();
 
-app.use('/', (req: Request, res: Response, next: NextFunction) => {
-  console.log('👋  REQUEST incoming ', req.url);
-  next();
-});
+app.use(morgan('common', { immediate: true }));
+
+app.use('/tasks', tasksRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200);
