@@ -6,4 +6,12 @@ async function getAll() {
   return db.get();
 }
 
-export const taskModel = { getAll };
+async function add(task: object) {
+  return db.add(task);
+}
+
+async function remove(id: string) {
+  return db.delete({ id });
+}
+
+export const taskModel = { getAll, add, remove };

@@ -1,3 +1,4 @@
+import bodyParser = require('body-parser');
 import express, { Request, Response } from 'express';
 import morgan = require('morgan');
 import { tasksRouter } from './tasks/router/tasks.router';
@@ -5,6 +6,7 @@ import { tasksRouter } from './tasks/router/tasks.router';
 const PORT = 3030;
 const app = express();
 
+app.use(bodyParser.json());
 app.use(morgan('common', { immediate: true }));
 
 app.use('/tasks', tasksRouter);
